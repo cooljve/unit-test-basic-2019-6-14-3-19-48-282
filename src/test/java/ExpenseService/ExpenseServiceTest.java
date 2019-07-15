@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ExpenseServiceTest {
   @Test
@@ -28,9 +29,9 @@ class ExpenseServiceTest {
   void should_return_expense_type_A_if_project_is_external_and_name_is_project_A() throws UnexpectedProjectTypeException {
     // given
     ProjectType projectType = ProjectType.EXTERNAL;
-    Project project=new Project(projectType,"Project A");
+    Project project = new Project(projectType, "Project A");
     // when
-    ExpenseType expenseType=getExpenseCodeByProjectTypeAndName(project);
+    ExpenseType expenseType = getExpenseCodeByProjectTypeAndName(project);
     // then
     assertEquals(expenseType, ExpenseType.EXPENSE_TYPE_A);
   }
@@ -39,9 +40,9 @@ class ExpenseServiceTest {
   void should_return_expense_type_B_if_project_is_external_and_name_is_project_B() throws UnexpectedProjectTypeException {
     // given
     ProjectType projectType = ProjectType.EXTERNAL;
-    Project project=new Project(projectType,"Project B");
+    Project project = new Project(projectType, "Project B");
     // when
-    ExpenseType expenseType=getExpenseCodeByProjectTypeAndName(project);
+    ExpenseType expenseType = getExpenseCodeByProjectTypeAndName(project);
     // then
     assertEquals(expenseType, ExpenseType.EXPENSE_TYPE_B);
   }
@@ -50,9 +51,9 @@ class ExpenseServiceTest {
   void should_return_other_expense_type_if_project_is_external_and_has_other_name() throws UnexpectedProjectTypeException {
     // given
     ProjectType projectType = ProjectType.EXTERNAL;
-    Project project=new Project(projectType,"Project C");
+    Project project = new Project(projectType, "Project C");
     // when
-    ExpenseType expenseType=getExpenseCodeByProjectTypeAndName(project);
+    ExpenseType expenseType = getExpenseCodeByProjectTypeAndName(project);
     // then
     assertEquals(expenseType, ExpenseType.OTHER_EXPENSE);
   }
@@ -60,7 +61,11 @@ class ExpenseServiceTest {
   @Test
   void should_throw_unexpected_project_exception_if_project_is_invalid() {
     // given
+    ProjectType projectType = ProjectType.UNEXPECTED_PROJECT_TYPE;
+    Project project = new Project(projectType, "Project D");
     // when
     // then
+    assertThrows(UnexpectedProjectTypeException.class, () ->
+        getExpenseCodeByProjectTypeAndName(project));
   }
 }
